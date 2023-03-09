@@ -34,7 +34,9 @@ module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name, about },
+    { name: name,
+      about: about
+    },
     { new: true, runValidators: true },
   )
     .then((user) => res.send({ data: user }))
@@ -48,7 +50,7 @@ module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { avatar },
+    { avatar: avatar },
     { new: true, runValidators: true },
   )
     .then((user) => res.send({ data: user }))
