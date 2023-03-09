@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const errorRouter = require('./routes/error')
+const errorRouter = require('./routes/error');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 

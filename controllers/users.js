@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-const {getErrorStatusCode} = require('../utils/helper')
+const { getErrorStatusCode } = require('../utils/helper');
 
 module.exports.createUser = (req, res) => {
   const { name, avatar, about } = req.body;
@@ -9,7 +9,7 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
       res.status(codeStatus).send({ message: err.message });
-    })
+    });
 };
 
 module.exports.getUsers = (req, res) => {
@@ -25,9 +25,9 @@ module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (user) {
-        res.send({data: user})
+        res.send({ data: user });
       } else {
-        res.status(404).send({ message: 'User not found'});
+        res.status(404).send({ message: 'User not found' });
       }
     })
     .catch((err) => {
@@ -40,8 +40,9 @@ module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name: name,
-      about: about
+    {
+      name,
+      about,
     },
     { new: true, runValidators: true },
   )
@@ -56,7 +57,7 @@ module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { avatar: avatar },
+    { avatar },
     { new: true, runValidators: true },
   )
     .then((user) => res.send({ data: user }))
