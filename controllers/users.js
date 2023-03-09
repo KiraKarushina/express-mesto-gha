@@ -23,7 +23,13 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      if (user) {
+        res.send({data: user})
+      } else {
+        res.status(404).send({ message: 'User not found'});
+      }
+    })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
       res.status(codeStatus).send({ message: err.message });
