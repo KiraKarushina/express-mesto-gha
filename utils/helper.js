@@ -4,8 +4,8 @@ module.exports.getErrorStatusCode = (err) => {
   if (err.name === 'ValidationError') {
     return 400
   }
-  if (err.name === 'ValidatorError') {
-    return 401
+  if (err.name === 'CastError') {
+    return 404
   }
   return 500;
 }
