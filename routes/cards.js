@@ -9,9 +9,9 @@ router.get('/cards', getCards);
 router.post('/cards', createCard);
 router.put('/cards/:cardId/likes', setLike);
 router.delete('/cards/:cardId/likes', deleteLike);
-// обрабатываем ошибку для несущетсвующих роутов
-router.all('*', (req, res) => {
-  res.status(404).send({message: 'Page not found'});
-});
+// // обрабатываем ошибку для несущетсвующих роутов
+// router.all('*', (req, res) => {
+//   res.status(404).send({message: 'Page not found'});
+// });
 
 module.exports = router; // экспортировали роутер
