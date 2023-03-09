@@ -1,25 +1,33 @@
 const User = require('../models/user');
 
+const {getErrorStatusCode} = require('../utils/helper')
+
 module.exports.createUser = (req, res) => {
   const { name, avatar, about } = req.body;
   User.create({ name, avatar, about })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      console.log("YA EST OSHIBKA", err.name);
-      res.send({ message: err.message });
+      const codeStatus = getErrorStatusCode(err);
+      res.status(codeStatus).send({ message: err.message });
     })
 };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      const codeStatus = getErrorStatusCode(err);
+      res.status(codeStatus).send({ message: err.message });
+    });
 };
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      const codeStatus = getErrorStatusCode(err);
+      res.status(codeStatus).send({ message: err.message });
+    });
 };
 
 module.exports.updateProfile = (req, res) => {
@@ -30,7 +38,10 @@ module.exports.updateProfile = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      const codeStatus = getErrorStatusCode(err);
+      res.status(codeStatus).send({ message: err.message });
+    });
 };
 
 module.exports.updateAvatar = (req, res) => {
@@ -41,5 +52,8 @@ module.exports.updateAvatar = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      const codeStatus = getErrorStatusCode(err);
+      res.status(codeStatus).send({ message: err.message });
+    });
 };
