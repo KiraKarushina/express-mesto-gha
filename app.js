@@ -1,17 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
-const errorRouter = require('./routes/error');
+const router = require('./routes/index');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+express.json();
 
 // Временное решение
 
@@ -23,9 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(usersRouter);
-app.use(cardsRouter);
-app.use(errorRouter);
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
