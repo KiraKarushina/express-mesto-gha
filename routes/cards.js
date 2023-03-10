@@ -1,4 +1,4 @@
-const router = require('express').Router(); // создали роутер
+const router = require('express').Router();
 
 const {
   createCard, getCards, deleteCard, setLike, deleteLike,
@@ -10,4 +10,4 @@ router.post('/cards', createCard);
 router.put('/cards/:cardId/likes', setLike);
 router.delete('/cards/:cardId/likes', deleteLike);
 
-module.exports = router; // экспортировали роутер
+module.exports = router;

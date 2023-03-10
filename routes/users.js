@@ -1,4 +1,4 @@
-const router = require('express').Router(); // создали роутер
+const router = require('express').Router();
 
 const {
   createUser, getUsers, getUser, updateProfile, updateAvatar,
@@ -10,4 +10,4 @@ router.post('/users', createUser);
 router.patch('/users/me', updateProfile);
 router.patch('/users/me/avatar', updateAvatar);
 
-module.exports = router; // экспортировали роутер
+module.exports = router;
