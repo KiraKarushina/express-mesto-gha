@@ -1,6 +1,8 @@
 const User = require('../models/user');
 
 const { getErrorStatusCode } = require('../utils/helper');
+const statusCodes = require("../utils/statusCodes");
+const messages = require("../utils/messages");
 
 module.exports.createUser = (req, res) => {
   const { name, avatar, about } = req.body;
@@ -8,16 +10,21 @@ module.exports.createUser = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      res.status(codeStatus).send({ message: err.message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
+      res.status(codeStatus).send({ message: message });
     });
 };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => {
+      console.log('uiii');
+      res.send({ data: users })
+    })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      res.status(codeStatus).send({ message: err.message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
+      res.status(codeStatus).send({ message: message });
     });
 };
 
@@ -27,12 +34,13 @@ module.exports.getUser = (req, res) => {
       if (user) {
         res.send({ data: user });
       } else {
-        res.status(404).send({ message: 'User not found' });
+        res.status(statusCodes.notFound).send({ message: messages.userNotFound });
       }
     })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      res.status(codeStatus).send({ message: err.message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
+      res.status(codeStatus).send({ message: message });
     });
 };
 
@@ -49,7 +57,8 @@ module.exports.updateProfile = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      res.status(codeStatus).send({ message: err.message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
+      res.status(codeStatus).send({ message: message });
     });
 };
 
@@ -63,6 +72,7 @@ module.exports.updateAvatar = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      res.status(codeStatus).send({ message: err.message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
+      res.status(codeStatus).send({ message: message });
     });
 };

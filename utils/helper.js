@@ -1,7 +1,8 @@
+const errorNames = require("./errorNames");
+const statusCodes = require("./statusCodes");
 module.exports.getErrorStatusCode = (err) => {
-  if (err.name === 'ValidationError' || err.name === 'CastError') {
-    return 400;
+  if (err.name === errorNames.validation || err.name === errorNames.cast) {
+    return statusCodes.badRequest;
   }
-
-  return 500;
+  return statusCodes.serverError;
 };

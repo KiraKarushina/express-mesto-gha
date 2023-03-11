@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const router = require('./routes/index');
+const mainRouter = require('./routes/index')
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-express.json();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Временное решение
 
@@ -19,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(router);
+app.use(mainRouter);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
