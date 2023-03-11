@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 const { getErrorStatusCode } = require('../utils/helper');
-const statusCodes = require("../utils/statusCodes");
-const messages = require("../utils/messages");
+const statusCodes = require('../utils/statusCodes');
+const messages = require('../utils/messages');
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
@@ -11,8 +11,8 @@ module.exports.createCard = (req, res) => {
     .then((card) => res.status(200).send({ data: card }))
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
-      res.status(codeStatus).send({ message: message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
+      res.status(codeStatus).send({ message });
     });
 };
 
@@ -22,8 +22,8 @@ module.exports.getCards = (req, res) => {
     .then((cards) => res.status(200).send({ data: cards }))
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
-      res.status(codeStatus).send({ message: message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
+      res.status(codeStatus).send({ message });
     });
 };
 
@@ -39,8 +39,8 @@ module.exports.deleteCard = (req, res) => {
     })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
-      res.status(codeStatus).send({ message: message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
+      res.status(codeStatus).send({ message });
     });
 };
 
@@ -59,8 +59,8 @@ module.exports.setLike = (req, res) => {
     })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
-      res.status(codeStatus).send({ message: message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
+      res.status(codeStatus).send({ message });
     });
 };
 
@@ -79,7 +79,7 @@ module.exports.deleteLike = (req, res) => {
     })
     .catch((err) => {
       const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError :  err.message);
-      res.status(codeStatus).send({ message: message });
+      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
+      res.status(codeStatus).send({ message });
     });
 };
