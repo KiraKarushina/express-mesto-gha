@@ -1,8 +1,8 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const statusCodes = require('../utils/statusCodes');
 const messages = require('../utils/messages');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const errorNames = require('../utils/errorNames');
 const BadRequestError = require('../customErrors/BadRequestRule');
@@ -14,8 +14,13 @@ const tokenExp = '7d';
 const secretJWT = 'some-secret-key';
 
 module.exports.createUser = (req, res, next) => {
-  const { name, avatar, about, email, password } = req.body;
-
+  const {
+    name,
+    avatar,
+    about,
+    email,
+    password,
+  } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
