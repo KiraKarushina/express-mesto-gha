@@ -131,9 +131,8 @@ module.exports.login = (req, res, next) => {
         .cookie('jwt', token, {
           maxAge: tokenExp,
           httpOnly: true,
-          sameSite: true,
-        })
-        .send({ message: messages.ok });
+        });
+      res.send({ token });
     })
     .catch(() => next(new UnauthorizedError()));
 };
