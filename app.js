@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors , celebrate, Joi} = require('celebrate');
+const { errors, celebrate, Joi } = require('celebrate');
 
 const statusCodes = require('./utils/statusCodes');
 const messages = require('./utils/messages');
@@ -20,16 +20,16 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required(),
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 }), login);
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required(),
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
     about: Joi.string().required().min(2).max(30),
-    avatar: Joi.string().required(),
+    avatar: Joi.string().required().urlencoded(),
     name: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
