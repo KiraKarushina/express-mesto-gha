@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class ConflictError extends Error {
   constructor(message = messages.conflict) {
@@ -7,4 +7,4 @@ class ConflictError extends Error {
   }
 }
 
-module.exports = { ConflictError };
+module.exports = ConflictError;

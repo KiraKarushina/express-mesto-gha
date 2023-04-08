@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class ForbiddenError extends Error {
   constructor(message = messages.forbidden) {
@@ -7,4 +7,4 @@ class ForbiddenError extends Error {
   }
 }
 
-module.exports = { ForbiddenError };
+module.exports = ForbiddenError;
