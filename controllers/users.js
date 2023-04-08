@@ -30,9 +30,13 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     })
-      .then((user) => res.send({ data: user }))
+      .then((user) => {
+        const dUser = user;
+        dUser.password = undefined;
+        res.send({ data: dUser });
+      })
       .catch((err) => {
-        if (err.name === errorNames.mongo && err.code === statusCodes.mongo) {
+        if (err.code === statusCodes.mongo) {
           throw new ConflictError();
         }
         if (err.name === errorNames.validation) {
