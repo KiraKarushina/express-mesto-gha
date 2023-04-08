@@ -2,13 +2,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const statusCodes = require('../utils/statusCodes');
-const messages = require('../utils/messages');
 
 const errorNames = require('../utils/errorNames');
 const BadRequestError = require('../customErrors/BadRequestRule');
 const ConflictError = require('../customErrors/ConflictError');
 const NotFoundError = require('../customErrors/NotFoundError');
 const UnauthorizedError = require('../customErrors/UnauthorizedError');
+const messages = require('../utils/messages');
 
 const tokenExp = '7d';
 const secretJWT = 'some-secret-key';
@@ -127,12 +127,11 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, secretJWT, { expiresIn: tokenExp });
-      res
-        .cookie('jwt', token, {
-          maxAge: tokenExp,
-          httpOnly: true,
-        });
-      res.send({ token });
+ 
+      res.cookie('jwt', token, {
+        maxAge: 36000000,
+        httpOnly: true,
+      }).send({ message: messages.ok });
     })
     .catch(() => next(new UnauthorizedError()));
 };

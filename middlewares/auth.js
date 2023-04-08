@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../customErrors/UnauthorizedError');
 
+const secretJWT = 'some-secret-key';
+
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -8,16 +10,16 @@ module.exports = (req, res, next) => {
     throw new UnauthorizedError();
   }
 
-  const token = authorization.replace('Bearer ', '');
+  const token = req.cookies.jwt || authorization.replace('Bearer ', '');
   let payload;
 
   try {
-    payload = jwt.verify(token, 'some-secret-key');
+    payload = jwt.verify(token, secretJWT);
   } catch (err) {
     throw new UnauthorizedError();
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса
 
-  next(); // пропускаем запрос дальше
+  return next(); // пропускаем запрос дальше
 };
