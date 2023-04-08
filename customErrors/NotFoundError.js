@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class NotFoundError extends Error {
   constructor(message = messages.notFound) {
@@ -7,4 +7,4 @@ class NotFoundError extends Error {
   }
 }
 
-module.exports = { NotFoundError };
+module.exports = NotFoundError;

@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class BadRequestError extends Error {
   constructor(message = messages.badRequest) {
@@ -7,4 +7,4 @@ class BadRequestError extends Error {
   }
 }
 
-module.exports = { BadRequestError };
+module.exports = BadRequestError;

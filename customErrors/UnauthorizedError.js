@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class UnauthorizedError extends Error {
   constructor(message = messages.unauthorized) {
@@ -7,4 +7,4 @@ class UnauthorizedError extends Error {
   }
 }
 
-module.exports = { UnauthorizedError };
+module.exports = UnauthorizedError;

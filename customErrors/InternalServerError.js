@@ -1,4 +1,4 @@
-const { messages } = require('../utils/messages');
+const messages = require('../utils/messages');
 
 class InternalServerError extends Error {
   constructor(message = messages.internal) {
@@ -7,4 +7,4 @@ class InternalServerError extends Error {
   }
 }
 
-module.exports = { InternalServerError };
+module.exports = InternalServerError;
