@@ -1,24 +1,23 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Жак-Ив Кусто'
+    default: 'Жак-Ив Кусто',
   },
   avatar: {
     type: String,
     required: true,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
-      validator: function(v) {
+      validator(v) {
         return /https?:\/\/(w{3}\.)?[\w\-.~:/?#[\]@!$&'\\()*+,;=]/.test(v);
       },
-      message: props => `${props.value} - неверная ссылка!`
+      message: (props) => `${props.value} - неверная ссылка!`,
     },
   },
   about: {
@@ -26,7 +25,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Исследователь'
+    default: 'Исследователь',
   },
   email: {
     type: String,
@@ -34,14 +33,14 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: validator.default.isEmail,
-      message: 'Трабла в email'
+      message: 'Трабла в email',
     },
   },
   password: {
     type: String,
     required: true,
-    select: false
-  }
+    select: false,
+  },
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {

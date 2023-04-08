@@ -1,7 +1,7 @@
 const messages = {
   userNotFound: 'User not found',
   cardNotFound: 'Card not found',
-  ok: "Успешно",
+  ok: 'Успешно',
   badRequest: 'Переданы некорректные данные',
   unauthorized: 'Необходима авторизация',
   forbidden: 'Недостаточно прав для этого действия',

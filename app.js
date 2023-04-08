@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 
-const statusCodes =  require('./utils/statusCodes');
-const messages =  require('./utils/messages')
+const statusCodes = require('./utils/statusCodes');
+const messages = require('./utils/messages');
 
 const { createUser, login } = require('./controllers/users');
 
-const auth = require('./middlewares/auth')
+const auth = require('./middlewares/auth');
 
 const mainRouter = require('./routes/index');
 // Слушаем 3000 порт
@@ -38,7 +38,6 @@ app.use(
     next();
   },
 );
-
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

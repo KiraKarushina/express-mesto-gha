@@ -1,12 +1,12 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const { getErrorStatusCode } = require('../utils/helper');
 const statusCodes = require('../utils/statusCodes');
 const messages = require('../utils/messages');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
-const { errorNames } = require('../utils/errorNames')
+const { errorNames } = require('../utils/errorNames');
 const { BadRequestError } = require('../customErrors/BadRequestRule');
 const { ConflictError } = require('../customErrors/ConflictError');
 const { NotFoundError } = require('../customErrors/NotFoundError');
@@ -16,17 +16,17 @@ const tokenExp = '7d';
 const secretJWT = 'some-secret-key';
 
 module.exports.createUser = (req, res, next) => {
-  // парсим body
-  const { name, avatar, about, email, password } = req.body;
+  const {
+    name, avatar, about, email, password,
+  } = req.body;
 
-  //хэшируем пароль и создаем пользователя
   bcrypt.hash(password, 10)
-    .then(hash => User.create({
-      name: name,
-      avatar: avatar,
-      about: about,
-      email: email,
-      password: hash, // записываем хеш в базу
+    .then((hash) => User.create({
+      name,
+      avatar,
+      about,
+      email,
+      password: hash,
     })
       .then((user) => res.send({ data: user }))
       .catch((err) => {
@@ -38,8 +38,7 @@ module.exports.createUser = (req, res, next) => {
         }
         next(err);
       })
-      .catch(next)
-    )
+      .catch(next));
 };
 
 module.exports.getCurrentUser = (req, res, next) => User.findById(req.user._id)
@@ -121,9 +120,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id }, secretJWT, { expiresIn: tokenExp },
-      );
+      const token = jwt.sign({ _id: user._id }, secretJWT, { expiresIn: tokenExp });
       res
         .cookie('jwt', token, {
           maxAge: tokenExp,

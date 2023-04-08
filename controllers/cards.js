@@ -2,7 +2,7 @@ const Card = require('../models/card');
 const statusCodes = require('../utils/statusCodes');
 const messages = require('../utils/messages');
 
-const { errorNames } = require('../utils/errorNames')
+const { errorNames } = require('../utils/errorNames');
 const { BadRequestError } = require('../customErrors/BadRequestRule');
 const { NotFoundError } = require('../customErrors/NotFoundError');
 const { ForbiddenError } = require('../customErrors/ForbiddenError');
@@ -41,7 +41,8 @@ module.exports.deleteCard = async (req, res, next) => {
           res.status(200).send({ data: card });
         } else {
           res.status(statusCodes.notFound).send({ message: messages.cardNotFound });
-        }})
+        }
+      })
       .catch((err) => next(err.name === errorNames.cast ? new BadRequestError() : err))
     : next(new ForbiddenError());
 };
