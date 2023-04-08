@@ -4,4 +4,4 @@ const errorNames = {
   mongo: 'MongoError',
 };
 
-module.exports = { errorNames };
+module.exports = errorNames;
