@@ -2,10 +2,10 @@ const Card = require('../models/card');
 const statusCodes = require('../utils/statusCodes');
 const messages = require('../utils/messages');
 
-const { errorNames } = require('../utils/errorNames');
-const { BadRequestError } = require('../customErrors/BadRequestRule');
-const { NotFoundError } = require('../customErrors/NotFoundError');
-const { ForbiddenError } = require('../customErrors/ForbiddenError');
+const errorNames = require('../utils/errorNames');
+const BadRequestError = require('../customErrors/BadRequestRule');
+const NotFoundError = require('../customErrors/NotFoundError');
+const ForbiddenError = require('../customErrors/ForbiddenError');
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
@@ -36,9 +36,9 @@ module.exports.deleteCard = async (req, res, next) => {
   return card.owner.toString() === req.user._id
     ? card
       .delete()
-      .then((card) => {
-        if (card) {
-          res.status(200).send({ data: card });
+      .then((c) => {
+        if (c) {
+          res.status(200).send({ data: c });
         } else {
           res.status(statusCodes.notFound).send({ message: messages.cardNotFound });
         }
