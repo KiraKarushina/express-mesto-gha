@@ -1,50 +1,52 @@
 const Card = require('../models/card');
-const { getErrorStatusCode } = require('../utils/helper');
 const statusCodes = require('../utils/statusCodes');
 const messages = require('../utils/messages');
 
-module.exports.createCard = (req, res) => {
+const { errorNames } = require('../utils/errorNames')
+const { BadRequestError } = require('../customErrors/BadRequestRule');
+const { NotFoundError } = require('../customErrors/NotFoundError');
+const { ForbiddenError } = require('../customErrors/ForbiddenError');
+
+module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
     .then((card) => res.status(200).send({ data: card }))
-    .catch((err) => {
-      const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
-      res.status(codeStatus).send({ message });
-    });
+    .catch((err) => next(err.name === errorNames.validation ? new BadRequestError() : err));
 };
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
     .populate(['owner', 'likes'])
     .then((cards) => res.status(200).send({ data: cards }))
-    .catch((err) => {
-      const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
-      res.status(codeStatus).send({ message });
-    });
+    .catch(next);
 };
 
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = async (req, res, next) => {
   const id = req.params.cardId;
-  Card.findByIdAndDelete(id)
-    .then((card) => {
-      if (card) {
-        res.status(200).send({ data: card });
-      } else {
-        res.status(statusCodes.notFound).send({ message: messages.cardNotFound });
-      }
-    })
-    .catch((err) => {
-      const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
-      res.status(codeStatus).send({ message });
-    });
+  let card;
+  try {
+    card = await Card.findById(id)
+      .orFail(new NotFoundError());
+  } catch (error) {
+    return next(error);
+  }
+
+  return card.owner.toString() === req.user._id
+    ? card
+      .delete()
+      .then((card) => {
+        if (card) {
+          res.status(200).send({ data: card });
+        } else {
+          res.status(statusCodes.notFound).send({ message: messages.cardNotFound });
+        }})
+      .catch((err) => next(err.name === errorNames.cast ? new BadRequestError() : err))
+    : next(new ForbiddenError());
 };
 
-module.exports.setLike = (req, res) => {
+module.exports.setLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -58,13 +60,15 @@ module.exports.setLike = (req, res) => {
       }
     })
     .catch((err) => {
-      const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
-      res.status(codeStatus).send({ message });
-    });
+      if (err.name === errorNames.validation || err.name === errorNames.cast) {
+        throw new BadRequestError();
+      }
+      next(err);
+    })
+    .catch(next);
 };
 
-module.exports.deleteLike = (req, res) => {
+module.exports.deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -78,8 +82,10 @@ module.exports.deleteLike = (req, res) => {
       }
     })
     .catch((err) => {
-      const codeStatus = getErrorStatusCode(err);
-      const message = (codeStatus === statusCodes.serverError ? messages.serverError : err.message);
-      res.status(codeStatus).send({ message });
-    });
+      if (err.name === errorNames.validation || err.name === errorNames.cast) {
+        throw new BadRequestError();
+      }
+      next(err);
+    })
+    .catch(next);
 };
