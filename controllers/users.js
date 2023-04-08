@@ -128,9 +128,10 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, secretJWT, { expiresIn: tokenExp });
  
-      res.cookie('jwt', token, {
+      res.cookie("sadsaasd", token, {
         maxAge: 36000000,
         httpOnly: true,
+        sameSite: true,
       }).send({ message: messages.ok });
     })
     .catch(() => next(new UnauthorizedError()));
