@@ -10,6 +10,8 @@ const { createUser, login } = require('./controllers/users');
 
 const auth = require('./middlewares/auth');
 
+const regular = /https?:\/\/(w{3}\.)?[\w\-.~:/?#[\]@!$&'\\()*+,;=]/;
+
 const mainRouter = require('./routes/index');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
@@ -31,7 +33,7 @@ app.post('/signup', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri(),
+    avatar: Joi.string().pattern(regular),
     name: Joi.string().min(2).max(30),
   }),
 }), createUser);

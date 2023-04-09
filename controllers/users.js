@@ -47,7 +47,7 @@ module.exports.createUser = (req, res, next) => {
       .catch(next));
 };
 
-module.exports.getCurrentUser = (req, res, next) => User.findById(req.cookie.userID)
+module.exports.getCurrentUser = (req, res, next) => User.findById(req.cookies.userID)
   .then((data) => {
     if (!data) {
       throw new NotFoundError();
