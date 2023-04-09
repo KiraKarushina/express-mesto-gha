@@ -23,28 +23,22 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.deleteCard = async (req, res, next) => {
+module.exports.deleteCard = (req, res, next) => {
   const id = req.params.cardId;
-  let card;
-  try {
-    card = await Card.findById(id)
-      .orFail(new NotFoundError());
-  } catch (error) {
-    return next(error);
-  }
 
-  return card.owner.toString() === req.user._id
-    ? card
-      .delete()
-      .then((c) => {
-        if (c) {
-          res.status(200).send({ data: c });
-        } else {
-          res.status(statusCodes.notFound).send({ message: messages.cardNotFound });
-        }
-      })
-      .catch((err) => next(err.name === errorNames.cast ? new BadRequestError() : err))
-    : next(new ForbiddenError());
+  const removeCard = () => {
+    Card.findByIdAndRemove(id).then((card) => res.send(card)).catch(next);
+  };
+  Card.findById(id).then((card) => {
+    if (!card) {
+      next(new NotFoundError());
+    }
+    if (id === card.owner.toString()) {
+      return removeCard();
+    }
+    return next(new ForbiddenError());
+  })
+    .catch(next);
 };
 
 module.exports.setLike = (req, res, next) => {
