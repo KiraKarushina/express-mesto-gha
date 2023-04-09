@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors, celebrate, Joi } = require('celebrate');
 
+const regular = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+
 const statusCodes = require('./utils/statusCodes');
 const messages = require('./utils/messages');
 
 const { createUser, login } = require('./controllers/users');
 
 const auth = require('./middlewares/auth');
-
-const regular = /https?:\/\/(w{3}\.)?[\w\-.~:/?#[\]@!$&'\\()*+,;=]/;
 
 const mainRouter = require('./routes/index');
 // Слушаем 3000 порт

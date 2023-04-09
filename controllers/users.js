@@ -7,7 +7,6 @@ const errorNames = require('../utils/errorNames');
 const BadRequestError = require('../customErrors/BadRequestRule');
 const ConflictError = require('../customErrors/ConflictError');
 const NotFoundError = require('../customErrors/NotFoundError');
-const UnauthorizedError = require('../customErrors/UnauthorizedError');
 const messages = require('../utils/messages');
 
 const tokenExp = '7d';
@@ -37,14 +36,13 @@ module.exports.createUser = (req, res, next) => {
       })
       .catch((err) => {
         if (err.code === statusCodes.mongo) {
-          throw new ConflictError();
+          next(new ConflictError());
         }
         if (err.name === errorNames.validation) {
-          throw new BadRequestError();
+          next(new BadRequestError());
         }
         next(err);
-      })
-      .catch(next));
+      }));
 };
 
 module.exports.getCurrentUser = (req, res, next) => User.findById(req.cookies.userID)
@@ -71,17 +69,15 @@ module.exports.getUser = (req, res, next) => {
       if (user) {
         res.send({ data: user });
       } else {
-        throw new NotFoundError();
+        next(new NotFoundError());
       }
     })
     .catch((err) => {
       if (err.name === errorNames.cast) {
-        throw new BadRequestError();
+        next(new BadRequestError());
       }
-
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateProfile = (req, res, next) => {
@@ -97,11 +93,10 @@ module.exports.updateProfile = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
-        throw new BadRequestError();
+        next(new BadRequestError());
       }
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -114,11 +109,10 @@ module.exports.updateAvatar = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
-        throw new BadRequestError();
+        next(new BadRequestError());
       }
       next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.login = (req, res, next) => {
@@ -138,5 +132,5 @@ module.exports.login = (req, res, next) => {
         sameSite: true,
       }).send({ message: messages.ok });
     })
-    .catch(() => next(new UnauthorizedError()));
+    .catch(next);
 };

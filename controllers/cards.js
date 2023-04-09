@@ -56,11 +56,11 @@ module.exports.setLike = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
-        throw new BadRequestError();
+        next(new BadRequestError());
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.deleteLike = (req, res, next) => {
@@ -78,9 +78,9 @@ module.exports.deleteLike = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
-        throw new BadRequestError();
+        next(new BadRequestError());
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
