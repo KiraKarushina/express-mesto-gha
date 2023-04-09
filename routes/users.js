@@ -22,7 +22,7 @@ router.patch('/users/me', celebrate({
 }), updateProfile);
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().pattern((link) => { regular.test(link); }),
+    avatar: Joi.string().required().pattern(regular),
   }),
 }), updateAvatar);
 router.get('/users/me', getCurrentUser);
