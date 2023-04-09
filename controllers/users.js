@@ -37,11 +37,11 @@ module.exports.createUser = (req, res, next) => {
       .catch((err) => {
         if (err.code === statusCodes.mongo) {
           next(new ConflictError());
-        }
-        if (err.name === errorNames.validation) {
+        } else if (err.name === errorNames.validation) {
           next(new BadRequestError());
+        } else {
+          next(err);
         }
-        next(err);
       }));
 };
 
@@ -75,8 +75,9 @@ module.exports.getUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === errorNames.cast) {
         next(new BadRequestError());
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -94,8 +95,9 @@ module.exports.updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
         next(new BadRequestError());
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -110,8 +112,9 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === errorNames.validation || err.name === errorNames.cast) {
         next(new BadRequestError());
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
