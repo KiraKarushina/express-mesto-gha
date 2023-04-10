@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const { errors, celebrate, Joi } = require('celebrate');
 const { regular } = require('./utils/constants');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const statusCodes = require('./utils/statusCodes');
 const messages = require('./utils/messages');
 
@@ -20,6 +22,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -41,6 +51,7 @@ app.use(auth);
 
 app.use(mainRouter);
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use(
