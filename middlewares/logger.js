@@ -6,14 +6,14 @@ const dirname = 'logs';
 
 const requestLogger = expexpressWinston.logger({
   transports: [
-    new winston.transport.File({ dirname, filename: 'request.log' }),
+    new winston.transports.File({ dirname, filename: 'request.log' }),
   ],
   format: winston.format.json(),
 });
 
 const errorLogger = expexpressWinston.errorLogger({
-  transport: [
-    new winston.transport.File({ dirname, filename: 'error.log' }),
+  transports: [
+    new winston.transports.File({ dirname, filename: 'error.log' }),
   ],
   format: winston.format.json(),
 });
