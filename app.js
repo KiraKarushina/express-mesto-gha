@@ -12,6 +12,7 @@ const messages = require('./utils/messages');
 const { createUser, login } = require('./controllers/users');
 
 const auth = require('./middlewares/auth');
+const cors = require('./middlewares/cors');
 
 const mainRouter = require('./routes/index');
 // Слушаем 3000 порт
@@ -22,6 +23,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(cors);
 
 app.use(requestLogger);
 
